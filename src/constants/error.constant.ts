@@ -1,0 +1,4 @@
+export default {
+  INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
+  INVALID_DATA: "INVALID_DATA",
+} as const;
