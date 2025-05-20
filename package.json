@@ -1,0 +1,57 @@
+{
+  "name": "express-prisma-template",
+  "version": "1.0.0",
+  "description": "A ready-to-use Express + Prisma backend template with TypeScript, Zod, Swagger, and Sentry.",
+  "author": {
+    "name": "Andrew Kononenko [wastardy]",
+    "email": "wastardy.k@gmail.com",
+    "url": "https://github.com/wastardy"
+  },
+  "dependencies": {
+    "@prisma/client": "^6",
+    "@sentry/cli": "^2",
+    "@sentry/node": "^8",
+    "@sentry/profiling-node": "^8",
+    "dotenv": "^16",
+    "express": "^4",
+    "swagger-jsdoc": "^6",
+    "swagger-ui-express": "^5",
+    "zod": "^3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9",
+    "@types/express": "^5",
+    "@types/jest": "^29",
+    "@types/node": "^22",
+    "@types/supertest": "^6",
+    "@types/swagger-jsdoc": "^6",
+    "@types/swagger-ui-express": "^4",
+    "@typescript-eslint/eslint-plugin": "^8",
+    "@typescript-eslint/parser": "^8",
+    "eslint": "^9",
+    "eslint-config-prettier": "^9",
+    "eslint-plugin-prettier": "^5",
+    "prettier": "^3",
+    "prettier-plugin-prisma": "^5",
+    "prisma": "^6",
+    "supertest": "^7",
+    "ts-jest": "^29",
+    "tsx": "^4",
+    "typescript": "^5"
+  },
+  "scripts": {
+    "build": "tsc",
+    "db:migrate": "prisma migrate deploy",
+    "db:reset": "prisma migrate reset",
+    "db:seed": "prisma db seed",
+    "dev": "tsx watch src/index.ts",
+    "lint": "eslint .",
+    "format": "eslint . --fix",
+    "prisma:generate": "prisma generate",
+    "seed": "tsx prisma/seed.ts",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject ./build && sentry-cli sourcemaps upload ./build",
+    "start": "node build/src/index.js",
+    "test": "jest --coverage",
+    "typecheck": "tsc --noEmit"
+  }
+}
