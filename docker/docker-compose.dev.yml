@@ -3,7 +3,7 @@ version: "3.8"
 services:
   postgres:
     image: postgres:latest
-    container_name: postgres
+    container_name: postgres_playground
     restart: always
     ports:
       - ${DB_PORT}:5432

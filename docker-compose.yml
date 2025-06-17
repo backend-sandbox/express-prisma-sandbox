@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres
+    container_name: playground_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - schedule_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+
+  app:
+    build: .
+    container_name: playground_api
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "${PORT}:3000"
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    command: "npm run start:dev"
+    volumes:
+      - .:/app
+      - ./app/node_modules
+    working_dir: /app
+
+volumes:
+  postgres_data:
