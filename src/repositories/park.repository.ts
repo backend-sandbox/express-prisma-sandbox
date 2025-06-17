@@ -4,6 +4,7 @@ import { ParkQueryDto } from "../dtos/park-query.dto";
 import { ParkFilterBuilder } from "../utils/park-filter-builder.util";
 import { PageRequest } from "../utils/page-request.util";
 import { ParkWithRelations } from "../types/park-with-relation.type";
+import { CreateParkDto } from "../dtos/create-park.dto";
 
 export class ParkRepository {
   private readonly parkRepository = prisma.park;
@@ -68,6 +69,20 @@ export class ParkRepository {
 
   async countTotalParks(): Promise<number> {
     return await this.parkRepository.count();
+  }
+
+  async bulkUpsertAndCountParks(parks: CreateParkDto[]): Promise<number> {
+    const result = await prisma.$transaction(
+      parks.map((park) =>
+        prisma.park.upsert({
+          where: { address: park.address },
+          update: park,
+          create: park,
+        }),
+      ),
+    );
+
+    return result.length;
   }
 
   private parkSearchFilter(query: Partial<ParkQueryDto>, userId?: string) {
