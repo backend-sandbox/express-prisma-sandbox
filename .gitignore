@@ -4,6 +4,9 @@ coverage/
 dist/
 node_modules/
 
+# Visual Studio Code
+.vscode/
+
 # JetBrains IDE
 .idea/
 

@@ -4,7 +4,7 @@ import * as controllers from "../controllers/example.controller";
 import { exampleValidator } from "../validators/example.validator";
 import { validate } from "../middlewares/validate.middleware";
 
-export const exampleRouter = Router();
+export const ExampleRouter = Router();
 
 // TODO: Find a better way to show error responses for ALL endpoints.
 
@@ -35,4 +35,4 @@ export const exampleRouter = Router();
  *             schema:
  *               $ref: '#/components/schemas/ExampleResponse'
  */
-exampleRouter.get("/", validate(exampleValidator), catchHandler(controllers.get));
+ExampleRouter.get("/", validate(exampleValidator), catchHandler(controllers.get));
