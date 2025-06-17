@@ -1,0 +1,3 @@
+export default {
+  CSV_FILE_UPLOADED_SUCCESSFULLY: "CSV_FILE_UPLOADED_SUCCESSFULLY",
+} as const;

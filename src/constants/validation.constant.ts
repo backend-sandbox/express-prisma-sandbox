@@ -13,5 +13,10 @@ export default {
   INVALID_PHONE: "INVALID_PHONE",
   INVALID_UUID_FORMAT: "INVALID_UUID_FORMAT",
 
+  MAXIMUM_ROWS_LIMIT: {
+    message: "MAXIMUM_ROWS_LIMIT",
+    description: "Maximum number of rows exceeded. The maximum allowed is 100000.",
+  },
+  MISSING_REQUIRED_MAPPING_FIELDS: "MAPPING_MUST_INCLUDE_NAME_AND_ADDRESS_FIELDS",
   MUST_BE_POSITIVE: "MUST_BE_POSITIVE",
 } as const;
