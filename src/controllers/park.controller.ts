@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 
 import { SuccessResponseDto } from "../dtos/success-response.dto";
 import { ParkService } from "../services/park.service";
+import { IncomingCsvPayload } from "../types/incoming-csv-payload.type";
+import successConstant from "../constants/success.constant";
 
 export class ParksController {
   private readonly parkService: ParkService = new ParkService();
@@ -34,5 +36,22 @@ export class ParksController {
     const upsertParkView = await this.parkService.upsertParkView(updateParkView);
 
     res.status(200).json(new SuccessResponseDto(upsertParkView));
+  }
+
+  // ! upsert parks from CSV file
+  async bulkUpsertParksFromCsv(req: Request, res: Response) {
+    const parkObjects: IncomingCsvPayload = {
+      mapping: req.body.mapping,
+      data: req.body.data,
+    };
+
+    const parkUpsertCount = await this.parkService.bulkUpsertParksFromCsv(parkObjects);
+
+    const upsertInfo = {
+      message: successConstant.CSV_FILE_UPLOADED_SUCCESSFULLY,
+      insertedParksCount: parkUpsertCount,
+    };
+
+    res.status(200).json(new SuccessResponseDto(upsertInfo));
   }
 }
