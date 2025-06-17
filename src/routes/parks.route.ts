@@ -5,6 +5,7 @@ import { limiter } from "../middlewares/limiter.middleware";
 import { catchHandler } from "../middlewares/catch.middleware";
 import { timeConstant } from "../constants/time.constant";
 import { validate } from "../middlewares/validate.middleware";
+import { BulkUpsertParksSchema } from "../validators/bulk-upsert-parks.validator";
 
 export const ParksRouter = Router();
 
@@ -29,10 +30,10 @@ const parksController = new ParksController();
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/ViewSaveParkBodySchema'
+ *             $ref: '#/components/schemas/BulkUpsertParksRequest'
  *     responses:
  *       200:
- *         description: Park saved/unsaved status updated successfully
+ *         description: Successfully bulk upsert parks from CSV file to DB.
  *         content:
  *           application/json:
  *             schema:
@@ -42,7 +43,7 @@ const parksController = new ParksController();
  *                   type: boolean
  *                   example: true
  *                 data:
- *                   $ref: '#/components/schemas/ParkViewSchema'
+ *                   $ref: '#/components/schemas/BulkUpsertParksResponse'
  *       400:
  *         description: Invalid body parameters
  *       401:
@@ -54,6 +55,7 @@ const parksController = new ParksController();
  */
 ParksRouter.post(
   "/bulk-upsert",
+  validate(BulkUpsertParksSchema),
   limiter(timeConstant.ONE_SECOND, 1, true),
-  catchHandler(parksController.upsertParkView.bind(parksController)),
+  catchHandler(parksController.bulkUpsertParksFromCsv.bind(parksController)),
 );
