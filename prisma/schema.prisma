@@ -6,3 +6,92 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum ParkCommunityType {
+  ALL_AGE
+  SENIOR
+}
+
+enum ParkInfrastructure {
+  PUBLIC
+}
+
+enum ParkUtilitiesIncluded {
+  Water
+  Sewer
+  Trash
+  Gas
+  Electricity
+}
+
+model User {
+  id        String @id @default(uuid()) @db.Uuid
+  firstName String @map("first_name")
+  lastName  String @map("last_name")
+  email     String @unique
+
+  parkViews ParkView[]
+  parkNotes ParkNote[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Park {
+  id                String                 @id @default(uuid()) @db.Uuid
+  name              String
+  address           String                 @unique
+  lotRent           Float?                 @map("lot_rent")
+  spaceRent         Float?                 @map("space_rent")
+  communityType     ParkCommunityType?     @map("community_type")
+  utilitiesIncluded ParkUtilitiesIncluded? @map("utilities_included")
+  infrastructure    ParkInfrastructure?    @map("infrastructure")
+  effectiveLotRent  Float?                 @map("effective_lot_rent")
+  spaceCount        Float?                 @map("space_count")
+  mortgage          Float?
+
+  lat Float?
+  lng Float?
+
+  views ParkView[]
+  notes ParkNote[]
+
+  @@index([lat, lng])
+  @@map("parks")
+}
+
+model ParkView {
+  id      String  @id @default(uuid()) @db.Uuid
+  isSaved Boolean @default(false) @map("is_saved")
+  parkId  String  @map("park_id") @db.Uuid
+  userId  String  @map("user_id") @db.Uuid
+
+  park Park @relation(fields: [parkId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([parkId, userId])
+  @@index([parkId, userId])
+  @@map("park_views")
+}
+
+model ParkNote {
+  id     String @id @default(uuid()) @db.Uuid
+  parkId String @map("park_id") @db.Uuid
+  userId String @map("user_id") @db.Uuid
+
+  content String
+
+  park Park @relation(fields: [parkId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([parkId])
+  @@map("park_notes")
+}
