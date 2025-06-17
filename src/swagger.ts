@@ -1,13 +1,17 @@
-import swaggerJsDoc from "swagger-jsdoc";
+import swaggerJSDoc from "swagger-jsdoc";
 import env from "./env";
-import { description, version } from "../package.json";
 
-export default swaggerJsDoc({
+export default swaggerJSDoc({
   swaggerDefinition: {
     openapi: "3.0.0",
     info: {
-      title: description,
-      version,
+      title: "Sandbox API",
+      version: "1.0.0",
+      description: "API Server for testing different features and libraries",
+      contact: {
+        name: "Andrew Kononenko [wastardy]",
+        email: "wastardy.k@gmail.com",
+      },
     },
     servers: [
       {
