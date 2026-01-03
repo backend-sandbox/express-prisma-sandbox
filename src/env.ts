@@ -21,6 +21,11 @@ const envSchema = zod.object({
   DB_NAME: zod.string().default("schedule_db"),
 
   DATABASE_URL: zod.string(),
+
+  REDIS_HOST: zod.string().default("localhost"),
+  REDIS_PORT: zod.coerce.number().default(6379),
+  REDIS_USERNAME: zod.string().optional().default("default"),
+  REDIS_PASSWORD: zod.string().optional().default("password"),
 });
 
 export default envSchema.parse(process.env);
